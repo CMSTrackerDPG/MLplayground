@@ -1,8 +1,15 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 
+from run_histos.models import RunHisto
 from runs.models import Run
-from .models import RunHisto
+from django_tables2 import SingleTableMixin
+from dataset_tables.tables import RunHistosTable1D
+from run_histos.filters import RunHistosFilter1D
+from django_filters.views import FilterView
+from run_histos.utilities.utilities import request_contains_filter_parameter
+
+from .utils import get_altair_chart
 
 from .utils import get_altair_chart
 
@@ -11,9 +18,31 @@ import altair as alt
 
 # Create your views here.
 
+
+def listRunHistos1D(request):
+    """
+    View to list all 1D histograms for Run based data
+    """
+    return listRunHistos1DView.as_view()(request=request)
+
+class listRunHistos1DView(SingleTableMixin, FilterView):
+    table_class = RunHistosTable1D
+    model = RunHisto
+    template_name = "run_histos/listRunHistos1D.html"
+    filterset_class = RunHistosFilter1D
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        runHistos_list = RunHisto.objects.all()[:200]
+        runHistos_table = RunHistosTable1D(runHistos_list)
+        context["runHistos_table"] = runHistos_table
+    
+        return context
+
+
 def import_view(request):
     return render(request, 'run_histos/import.html')
 
+  
 def run_histos_view(request):
 
     error_message = None
@@ -55,6 +84,7 @@ def run_histos_view(request):
 
     return render(request, 'run_histos/main.html', context)
 
+  
 def altair_chart_view(request):
 
     chart = {}

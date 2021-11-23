@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
+import os
+
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -44,11 +46,14 @@ INSTALLED_APPS = [
     'bootstrap3',
     'django_tables2',
     'django_extensions',
+    'widget_tweaks',
+    'django_filters',
     'rest_framework',
 
     'home.apps.HomeConfig',
     'tables.apps.TablesConfig',
-    'datasets.apps.DatasetsConfig',
+    'listdatasets.apps.ListdatasetsConfig',
+    'dataset_tables.apps.DatasetTablesConfig',
 
     'runs',
     'run_histos',
@@ -75,7 +80,7 @@ ROOT_URLCONF = 'mlp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,13 +141,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [ BASE_DIR / 'static_project' ]
-
-STATIC_ROOT = BASE_DIR / 'static_cdn/static_root'
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'home/static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'static_cdn/media_root'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
