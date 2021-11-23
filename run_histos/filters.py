@@ -3,8 +3,10 @@ from django import forms
 from django.db import models
 from run_histos.models import RunHisto
 
+
 class InFilter(django_filters.filters.BaseInFilter, django_filters.filters.CharFilter):
     pass
+
 
 class RunHistosFilter1D(django_filters.FilterSet):
 
