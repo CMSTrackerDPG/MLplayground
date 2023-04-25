@@ -8,8 +8,10 @@
 <script src="{% static 'js/axios.min.js' %}"></script>
 <script src="{% static 'js/utils.js' %}"></script>
 <script src="{% static 'histogram_file_manager/js/histogram_file_manager.js' %}"></script>
+<script src="{% static 'histogram_file_manager/js/histogram_file_manager_discover.js' %}"></script>
 <script src="{% static 'histogram_file_manager/js/components/file_table.js' %}"></script>
 <script src="{% static 'histogram_file_manager/js/components/file_actions.js' %}"></script>
+<script src="{% static 'histogram_file_manager/js/components/file_discover.js' %}"></script>
 <script src="{% static 'histogram_file_manager/js/components/table_pagination.js' %}"></script>
 <script src="{% static 'histogram_file_manager/js/components/errors.js' %}"></script>
 <script src="{% static 'histogram_file_manager/js/components/success.js' %}"></script>
@@ -75,6 +77,7 @@ Histogram File Manager
 {% block scripts %}
 <script>
  const mountedApp = app.mount('#app');
+ const mountedAppDiscover = app_discover.mount("#app_discover");
 
  // On page load
  // window.addEventListener('load', (event) => {

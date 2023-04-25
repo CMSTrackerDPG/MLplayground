@@ -1,6 +1,19 @@
 {% load widget_tweaks %}
 
 <h2>Histogram file manager</h2>
+<div id="app_discover">
+    {% csrf_token %}
+    <div class="d-grid">
+        <button id="id_btn_discover" class="btn btn-primary" style="margin-top: 5pt" v-on:click="show_file_discover_modal()">
+            Discover files
+        </button>
+    </div>
+    <file-discover
+        :is_visible="file_discover_is_visible"
+        @clicked-close="hide_file_discover_modal"
+    >
+    </file-discover>
+</div>
 <hr/>
 
 <form id="file_filter_form" action="" method="get" class="form my-1"> 
