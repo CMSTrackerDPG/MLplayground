@@ -64,6 +64,13 @@ app.component('file-table', {
                     }
                     return ret;
                 },
+                id: function (value) {
+                    var a = document.createElement('a');
+                    var t = document.createTextNode(value);
+                    a.href = `${value}`;
+                    a.appendChild(t);
+                    return a.outerHTML;
+                }
             },
         };
     },
