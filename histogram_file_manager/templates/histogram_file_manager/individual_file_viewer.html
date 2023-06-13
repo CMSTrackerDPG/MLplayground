@@ -1,4 +1,4 @@
-{% extends 'base_with_sidebar.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block extra_head %}
@@ -10,109 +10,29 @@
 File ID {{file_id}}
 {% endblock %}
 
-{% block maincontent %}
-{% if errormsg %}
-<div class="alert alert-danger">
-    <h2>{{errormsg}}</h2>
-    You are requesting file id {{file_id}}, but the file is not available on our database.
-    <br>
-    <a class="btn btn-primary" href="{% url 'histogram_file_manager:file_manager' %}"><i class="bi bi-arrow-left"></i> Go back</a>
+{% block content %}
+
+{% load render_table from django_tables2 %}
+{% load bootstrap3 %}
+
+<div class="row">
+    <div class="col-lg-3 col-12">
+        Filter goes here.
+    </div>
+    <div class="col-lg-9 col-12">
+        {% if errormsg %}
+        <div class="alert alert-danger">
+            <h2>{{errormsg}}</h2>
+            You are requesting file id {{file_id}}, but the file is not available on our database.
+            <br>
+            <a class="btn btn-primary" href="{% url 'histogram_file_manager:file_manager' %}"><i class="bi bi-arrow-left"></i> Go back</a>
+        </div>
+        {% else %}
+        <h2><code>{{filename}}</code></h2>
+        <hr>
+        {% render_table hist_table 'histogram_file_manager/bootstrap.html' %}
+        {% endif %}
+    </div>
 </div>
-{% else %}
-<h2><code>{{filename}}</code></h2>
-<hr>
-    {% if n_hist1d != 0 %}
-    <hr>
-    <h3>1D histograms</h3>
-    <div>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for hist in hist1d %}
-        <div class="col">
-        <a class="card" href="{% url 'visualize_histogram:visualize_histogram' runnr=hist.lumisection.run_id lumisection=hist.lumisection.ls_number title=hist.title %}">
-            <div class="card-img-top" id="histogram-id-{{hist.id}}" style="height: 200px;">
-            <script>
-                var trace = {
-                    y: {{ hist.data }},
-                    type: 'bar',
-                    marker: {color: '#0033A0'}
-                };
-                var data = [trace];
 
-                Plotly.newPlot("histogram-id-{{hist.id}}", data, 
-                {
-                    margin: {t: 10, b: 10, l: 10, r: 10},
-                    yaxis: {"visible": false}, 
-                    xaxis: {"visible": false}, 
-                    bargap: 0, 
-                    paper_bgcolor: 'rgba(0,0,0,0)',
-                    plot_bgcolor: 'rgba(0,0,0,0)'
-                }, {staticPlot: true});
-            </script>
-            </div>
-            <div class="card-body">
-            {{ hist.title }}
-            </div>
-        </a>
-        </div>
-        {% endfor %}
-    </div>
-    </div>
-    {% endif %}
-
-    {% if n_hist2d != 0 %}
-    <hr>
-    <h3>2D histograms</h3>
-    <div>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for hist in hist2d %}
-        <div class="col">
-        <a class="card" href="{% url 'visualize_histogram:visualize_histogram' runnr=hist.lumisection.run_id lumisection=hist.lumisection.ls_number title=hist.title %}">
-            <div class="card-img-top" id="histogram-id-{{hist.id}}" style="height: 200px;">
-            <script>
-                var data = [
-                    {
-                        z: {{ hist.data }},
-                        type: 'heatmap',
-                        colorscale: 'Viridis'
-                    }
-                ];
-
-                Plotly.newPlot("histogram-id-{{hist.id}}", data, 
-                {
-                    margin: {t: 10, b: 10, l: 10, r: 10}, 
-                    yaxis: {"visible": false}, 
-                    xaxis: {"visible": false}, 
-                    bargap: 0, 
-                    paper_bgcolor: 'rgba(0,0,0,0)',
-                    plot_bgcolor: 'rgba(0,0,0,0)'
-                }, {staticPlot: true});
-            </script>
-            </div>
-            <div class="card-body">
-            {{ hist.title }}
-            </div>
-        </a>
-        </div>
-        {% endfor %}
-    </div>
-    </div>
-    {% endif %}
-{% endif %}
-{% endblock %}
-
-{% block sidebar %}
-File ID:
-{{file_id}}
-
-Total entries:
-{{fileobj.entries_total}}
-
-Processed entries:
-{{fileobj.entries_processed}}
-
-First created:
-{{fileobj.created}}
-
-Last modified:
-{{fileobj.modified}}
 {% endblock %}

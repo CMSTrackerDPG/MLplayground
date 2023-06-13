@@ -4,7 +4,7 @@ from django.db.models.fields import FloatField
 
 from django_filters import rest_framework as filters
 from histogram_file_manager.models import HistogramDataFile, HistogramDataFileContents
-
+from histograms.models import LumisectionHistogramBase
 
 class HistogramDataFileFilter(filters.FilterSet):
 
@@ -90,3 +90,35 @@ class HistogramDataFileFilter(filters.FilterSet):
             "granularity",
             "processing_complete",
         ]
+
+#class HistogramIndividualFileFilter(filters.FilterSet):
+#    lumisection__ls_number__in = InFilter(
+#        field_name="lumisection__ls_number", lookup_expr="in"
+#    )
+#    lumisection__run__run_number__in = InFilter(
+#        field_name="lumisection__run__run_number", lookup_expr="in"
+#    )
+#    source_data_file__filepath__contains = django_filters.CharFilter(
+#        field_name="source_data_file__filepath", lookup_expr="icontains"
+#    )
+#
+#    class Meta:
+#        model = LumisectionHistogramBase
+#        fields = {
+#            "lumisection__run__run_number": [
+#                "exact",
+#                "gte",
+#                "lte",
+#            ],
+#            "lumisection__ls_number": [
+#                "exact",
+#                "gte",
+#                "lte",
+#            ],
+#            "entries": [
+#                "gte",
+#                "lte",
+#            ],
+#            "source_data_file": ["exact"],
+#        }
+#
