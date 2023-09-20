@@ -3,7 +3,8 @@ from django.conf import settings
 from django.utils.html import format_html
 from django.core.exceptions import ObjectDoesNotExist
 from histogram_file_manager.models import HistogramDataFile
-from histogram_file_manager.forms import HistogramDataFileForm
+#from histogram_file_manager.forms import HistogramDataFileForm
+from histograms.models import LumisectionHistogram2D, LumisectionHistogramBase
 
 
 class HistogramDataFileTable(tables.Table):
@@ -90,3 +91,13 @@ class HistogramDataFileTable(tables.Table):
         #
         model = HistogramDataFile
         fields = []
+
+
+class IndividualFileTable(tables.Table):
+    run = tables.Column()
+    lumisection = tables.Column()
+    dimension = tables.Column()
+    title = tables.Column(attrs={"td":{"style" : "min-width: 300px; word-break: break-all;" }})
+
+    class Meta: 
+        attrs = {"class": "table table-hover table-striped"}

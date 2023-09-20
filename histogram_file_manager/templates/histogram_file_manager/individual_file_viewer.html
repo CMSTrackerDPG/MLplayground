@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<!-- <script src="https://unpkg.com/vue@3"></script> -->
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+{% endblock %}
+
+{% block title %}
+File ID {{file_id}}
+{% endblock %}
+
+{% block content %}
+
+{% load render_table from django_tables2 %}
+{% load bootstrap3 %}
+
+<div class="row">
+    <div class="col-lg-3 col-12">
+        Filter goes here.
+    </div>
+    <div class="col-lg-9 col-12">
+        {% if errormsg %}
+        <div class="alert alert-danger">
+            <h2>{{errormsg}}</h2>
+            You are requesting file id {{file_id}}, but the file is not available on our database.
+            <br>
+            <a class="btn btn-primary" href="{% url 'histogram_file_manager:file_manager' %}"><i class="bi bi-arrow-left"></i> Go back</a>
+        </div>
+        {% else %}
+        <h2><code>{{filename}}</code></h2>
+        <hr>
+        {% render_table hist_table 'histogram_file_manager/bootstrap.html' %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
