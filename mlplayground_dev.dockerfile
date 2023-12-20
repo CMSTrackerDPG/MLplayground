@@ -41,10 +41,8 @@ RUN apt install -y lsb-core && \
     python -m pip install wheel && \
     python -m pip install -r /app/requirements.txt
 
-# USER mlp
 # The port to serve the mlp web app
 EXPOSE 8000
-# USER mlp
 WORKDIR /app/src/mlplayground
 
 
@@ -53,7 +51,6 @@ WORKDIR /app/src/mlplayground
 # create an .env file,
 # do migrations and, finally, start the server. Phew!
 ENTRYPOINT [ -f /app/src/mlplayground/requirements.txt ] || (echo "Please mount your local code with \"-v /host/path/to/mlplayground:/app/src/mlplayground\"" && exit 1) && \
-    # chown -R postgres:postgres /var/lib/postgresql/16/main && \
     set -x && \
     export POSTGRES_USER=postgres && \
     chown -R mlp /var/lib/postgresql/16/main /var/log/postgresql /var/run/postgresql && \
@@ -89,8 +86,3 @@ CERN_SSO_REGISTRATION_CLIENT_SECRET=bbbbbbbbb">.env && \
     fi && \
     python manage.py runserver 0.0.0.0:8000 && \
         /bin/bash
-
-# chown -R mlp:mlp /var/lib/postgresql/16/main && \
-# su -c "/usr/lib/postgresql/16/bin/initdb /var/lib/postgresql/16/main" mlp && \
-# pg_ctlcluster 16 main start && \
-# service postgresql status && \
